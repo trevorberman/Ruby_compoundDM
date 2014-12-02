@@ -46,6 +46,31 @@ _site/
 *.css.map
 
 #----------------------------------------------------------------------------
+# GitIgnore for possible Ruby included files.
+#----------------------------------------------------------------------------
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/test/tmp/
+/test/version_tmp/
+/tmp/
+
+## Specific to RubyMotion:
+.dat*
+.repl_history
+build/
+
+## Documentation cache and generated files:
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
+
+#----------------------------------------------------------------------------
 # GitIgnore for possible Rails included files.
 # Ignore these files when commiting to a git repository.
 #
@@ -60,6 +85,7 @@ _site/
 
 # bundler state
 /.bundle
+/lib/bundler/man/
 /vendor/bundle/
 /vendor/ruby/
 
