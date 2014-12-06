@@ -50,3 +50,19 @@ end
 # Append pages[] to uri_list[]
 pages.each { |uri| uri_list << uri }
 p uri_list
+
+# Create array to hold CDM singleItem pages links list
+item_pages = %w()
+
+# Collate list of singleItem pages links from all results pages in uri_list
+# uri_list.each do |uri|
+%w(
+  http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchterm/east%20side/field/neighb/mode/all/conn/and/order/nosort
+  http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchterm/east%20side/field/neighb/mode/all/conn/and/order/nosort/page/2
+).each do |uri|
+  doc_two = Nokogiri::HTML(open(uri))
+  single_item_links = doc_two.css('div.listContentBottom a')
+  single_item_links.each { |link| item_pages.insert(-1, link['href']) }
+  # item_pages.insert(-1, Nokogiri::HTML(open(uri)).css('div.listContentBottom a')['href'])
+end
+p item_pages
