@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
+require 'mechanize'
 
 # Take a CONTENTdm results query
 # Southside; more_results_pages = 1
@@ -60,10 +61,16 @@ puts uri_list.length   # => 5
 # puts uri
 # count = 1
 # while uri_list.length > 0
+agent = Mechanize.new
 uri_list.each do |uri|
-  doc = Nokogiri::HTML(open(uri))
-  single_item_links = doc.css('div.listContentBottom a')
-  single_item_links.each { |link| item_pages.insert(-1, link['href']) }
+  page = agent.get(uri)
+  parser = page.parser
+  # doc = Nokogiri::HTML(open(uri))
+  # single_item_links = page.links_with(:dom_class => 'body_link_11')
+  single_item_links = parser.css('div.listContentBottom a')
+  # single_item_links = page.css('div.listContentBottom a')
+  # single_item_links.each { |link| puts 'http://collections.lib.uwm.edu' + link['href'] }
+  single_item_links.each { |link| item_pages.insert(-1, 'http://collections.lib.uwm.edu' + link['href']) }
   # uri = uri_list[uri_list.length - (uri_list.length -1)]
   # uri_list.delete_at(0)
   # puts uri_list.length
