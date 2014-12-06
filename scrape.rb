@@ -25,10 +25,6 @@ uri_list = %W(
   puts uri
 end
 
-# Can use var to set array length!
-# But .inset into empty array is simpler solution here.
-# pages = Array.new(more_results_pages)
-
 # Create array to hold more_result_pages uri list
 pages = []
 
@@ -39,9 +35,6 @@ p pages
 # Add page/# ending for each results_page to base uri and add to uri list
 while  more_results_pages > 0
   more_results_uri = base_uri + "/page/#{more_results_pages + 1}"
-  # Can use var and arithm to index array!
-  # But .inset into empty array is simpler solution here.
-  # pages.insert(more_results_pages.to_i - 1, more_results_uri)
   pages.insert(0, more_results_uri)
   p pages
   more_results_pages -= 1
@@ -56,34 +49,14 @@ p uri_list
 item_pages = %w()
 
 # Collate list of singleItem pages links from all results pages in uri_list
-puts uri_list.length   # => 5
-# uri = uri_list[0]
-# puts uri
-# count = 1
-# while uri_list.length > 0
 agent = Mechanize.new
 uri_list.each do |uri|
   page = agent.get(uri)
   parser = page.parser
-  # doc = Nokogiri::HTML(open(uri))
-  # single_item_links = page.links_with(:dom_class => 'body_link_11')
   single_item_links = parser.css('div.listContentBottom a')
-  # single_item_links = page.css('div.listContentBottom a')
-  # single_item_links.each { |link| puts 'http://collections.lib.uwm.edu' + link['href'] }
-  single_item_links.each { |link| item_pages.insert(-1, 'http://collections.lib.uwm.edu' + link['href']) }
-  # uri = uri_list[uri_list.length - (uri_list.length -1)]
-  # uri_list.delete_at(0)
-  # puts uri_list.length
-  # uri = uri_list[count]
-  # count += 1
+  single_item_links.each do |link|
+    item_pages.insert(-1, 'http://collections.lib.uwm.edu' + link['href'])
+  end
 end
 
-=begin
-uri_list.each do |uri|
-  doc_two = Nokogiri::HTML(open(uri))
-  single_item_links = doc_two.css('div.listContentBottom a')
-  single_item_links.each { |link| item_pages.insert(-1, link['href']) }
-  # item_pages.insert(-1, Nokogiri::HTML(open(uri)).css('div.listContentBottom a')['href'])
-end
-=end
-p item_pages
+p item_pages   # => trip out on the wild pattern!
