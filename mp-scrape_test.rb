@@ -12,6 +12,9 @@ base_uri = 'http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchter
 doc = Nokogiri::HTML(open(base_uri))
 
 # Find the number of additional results pages
+# As orig devised; works as expected BUT CONTENTdm fills middle button
+# numbers with '...' if length exceeds 3+ additional results pages. Thus unable
+# to get pagination by th efoolowing methed. See: scraper.rb for updated.
 pagination = doc.css('div.link_bar_pagination li')
 # Because <li></li>s each
 # Divide by 2 changes .length from num elements to num buttons
