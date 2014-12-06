@@ -30,26 +30,27 @@ end
 # Can use var to set array length!
 # But .inset into empty array is simpler solution here.
 # pages = Array.new(more_results_pages)
+
+# Create array to hold more_result_pages uri list
 pages = []
 
+# Ouput tests on the new array
 puts pages.length
 p pages
 
+# Add page/# ending for each results_page to base uri and add to uri list
 while  more_results_pages > 0
   more_results_uri = base_uri + "/page/#{more_results_pages + 1}"
   # Can use var and arithm to index array!
   # But .inset into empty array is simpler solution here.
   # pages.insert(more_results_pages.to_i - 1, more_results_uri)
   pages.insert(0, more_results_uri)
-  # puts more_results_uri
-  # pages.each { |uri| puts uri }
   p pages
-  # puts pages.first
-  # puts pages.last
   more_results_pages -= 1
   puts more_results_pages
 end
 
+# Append pages[] to uri_list[]
 pages.each { |uri| uri_list << uri }
 p uri_list
 
