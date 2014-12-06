@@ -55,14 +55,28 @@ p uri_list
 item_pages = %w()
 
 # Collate list of singleItem pages links from all results pages in uri_list
-# uri_list.each do |uri|
-%w(
-  http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchterm/east%20side/field/neighb/mode/all/conn/and/order/nosort
-  http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchterm/east%20side/field/neighb/mode/all/conn/and/order/nosort/page/2
-).each do |uri|
+puts uri_list.length   # => 5
+# uri = uri_list[0]
+# puts uri
+# count = 1
+# while uri_list.length > 0
+uri_list.each do |uri|
+  doc = Nokogiri::HTML(open(uri))
+  single_item_links = doc.css('div.listContentBottom a')
+  single_item_links.each { |link| item_pages.insert(-1, link['href']) }
+  # uri = uri_list[uri_list.length - (uri_list.length -1)]
+  # uri_list.delete_at(0)
+  # puts uri_list.length
+  # uri = uri_list[count]
+  # count += 1
+end
+
+=begin
+uri_list.each do |uri|
   doc_two = Nokogiri::HTML(open(uri))
   single_item_links = doc_two.css('div.listContentBottom a')
   single_item_links.each { |link| item_pages.insert(-1, link['href']) }
   # item_pages.insert(-1, Nokogiri::HTML(open(uri)).css('div.listContentBottom a')['href'])
 end
+=end
 p item_pages
