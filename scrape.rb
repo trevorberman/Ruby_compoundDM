@@ -32,7 +32,7 @@ pages = []
 puts pages.length
 p pages
 
-# Add page/# ending for each results_page to base uri and add to uri list
+# Add page/# ending for each results_page to base uri, push to uri list
 while  more_results_pages > 0
   more_results_uri = base_uri + "/page/#{more_results_pages + 1}"
   pages.insert(0, more_results_uri)
@@ -45,10 +45,10 @@ end
 pages.each { |uri| uri_list << uri }
 p uri_list
 
-# Create array to hold CDM singleItem pages links list
+# Create array to hold CDM single_item_links
 item_pages = %w()
 
-# Collate list of singleItem pages links from all results pages in uri_list
+# Collate list of single_item_links links from all results pages in uri_list
 agent = Mechanize.new
 uri_list.each do |uri|
   page = agent.get(uri)
@@ -60,3 +60,34 @@ uri_list.each do |uri|
 end
 
 p item_pages   # => trip out on the wild pattern!
+
+# Create array to hold CDM singleItems' (arrays/rows) scraped data
+item_pages_data %w()
+
+# Scrape data from CDM singleItems into array, push to item_pages_data
+item_pages.each do |uri|
+  page = agent.get(uri)
+  parser = page.parser
+  page.title = Array.new([
+    parser.css('div#image_title h1'),   # => Title
+    parser.css('td#metadata_altern'),   # => Alternate Title
+    parser.css('div#imageLayer'),   # => work on this info seperate loop, item_pages_data([][2])
+    parser.css('td#metadata_data a'),   # => Date
+    parser.css('td#metadata_descri'),   # => Description
+    parser.css('td#metadata_neighb a.first'),   # => Neighborhood
+    parser.css('td#metadata_addres a'),   # => Address; needs concat all 'a' text plus spaces
+    parser.css('td#metadata_busine a'),   # => Business/Place
+    parser.css('td#metadata_type'),   # => Type
+    parser.css('td#metadata_collec a'),   # => Collection
+    parser.css('td#metadata_origin a'),   # => Original Format
+    parser.css('td#metadata_reposi'),   # => Repository
+    parser.css('td#metadata_rights'),   # => Rights
+    parser.css('td#metadata_publis'),   # => Digital Publisher
+    parser.css('td#metadata_digita a'),   # => Digital ID
+    parser.css('td#metadata_digitb a')   # => Digital Collection
+  ])
+  item_pages_data.insert(-1, 'page.title')
+end
+
+p item_pages_data.first
+p item_pages_data.last
