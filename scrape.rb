@@ -15,35 +15,35 @@ doc = Nokogiri::HTML(open(base_uri))
 # Find the number of additional results pages
 pagination = doc.css('li#pagination_button_last a')
 more_results_pages = pagination[0].text.to_i - 1
-puts more_results_pages
+# puts more_results_pages
 
 # Create 'General Delimited Syntax' array
 # of tokens %W("#{interpolated} strings") to hold uri list
 uri_list = %W(
   #{base_uri}
 ).each do |uri|
-  puts uri
+  # puts uri
 end
 
 # Create array to hold more_result_pages uri list
 pages = []
 
 # Ouput tests on the new array
-puts pages.length
-p pages
+# puts pages.length
+# p pages
 
 # Add page/# ending for each results_page to base uri, push to uri list
 while  more_results_pages > 0
   more_results_uri = base_uri + "/page/#{more_results_pages + 1}"
   pages.insert(0, more_results_uri)
-  p pages
+  # p pages
   more_results_pages -= 1
-  puts more_results_pages
+  # puts more_results_pages
 end
 
 # Append pages[] to uri_list[]
 pages.each { |uri| uri_list << uri }
-p uri_list
+# p uri_list
 
 # Create array to hold CDM single_item_links
 item_pages = %w()
@@ -59,16 +59,17 @@ uri_list.each do |uri|
   end
 end
 
-p item_pages   # => trip out on the wild pattern!
+# p item_pages   # => trip out on the wild pattern!
 
-# Create array to hold CDM singleItems' (arrays/rows) scraped data
+# Create array to hold each cdm_item 's array = CSV row of scraped data
 item_pages_data = %w()
 
-# Scrape data from CDM singleItems into array, push to item_pages_data
+# Scrape data from item_pages links, push to item_pages_data
 item_pages.each do |uri|
   page = agent.get(uri)
   parser = page.parser
-  page.title = Array.new([
+  # cdm_item = parser.css('div#image_title h1').text.strip
+  item_pages_data.insert(-1, Array.new([
     parser.css('div#image_title h1'),   # => Title
     parser.css('td#metadata_altern'),   # => Alternate Title
     parser.css('div#imageLayer'),   # => work on this info seperate loop, item_pages_data([][2])
@@ -86,8 +87,11 @@ item_pages.each do |uri|
     parser.css('td#metadata_digita a'),   # => Digital ID
     parser.css('td#metadata_digitb a')   # => Digital Collection
   ])
-  item_pages_data.insert(-1, 'page.title')
+  )
+  # item_pages_data.insert(-1, 'cdm_item')
 end
 
-p item_pages_data.first
-p item_pages_data.last
+p item_pages_data.first.class
+p item_pages_data.last.class
+puts item_pages_data.first
+# p item_pages_data.last
