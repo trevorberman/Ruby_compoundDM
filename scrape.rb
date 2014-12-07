@@ -62,7 +62,7 @@ end
 p item_pages   # => trip out on the wild pattern!
 
 # Create array to hold CDM singleItems' (arrays/rows) scraped data
-item_pages_data %w()
+item_pages_data = %w()
 
 # Scrape data from CDM singleItems into array, push to item_pages_data
 item_pages.each do |uri|
