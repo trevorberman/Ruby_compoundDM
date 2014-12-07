@@ -7,7 +7,15 @@ require 'mechanize'
 # Southside; more_results_pages = 1
 # base_uri = 'http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchterm/southeast%20side/field/neighb/mode/all/conn/and/order/nosort'
 # Eastside; more_results_pages = 4
-base_uri = 'http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchterm/east%20side/field/neighb/mode/all/conn/and/order/nosort'
+# base_uri = 'http://collections.lib.uwm.edu/cdm/search/collection/mkenh/searchterm/east%20side/field/neighb/mode/all/conn/and/order/nosort'
+
+puts "1. Use the browser of your choice to go to the UWM Libraries
+\s\s'Milwaukee Neighborhoods' digital collection home page.\n \n"
+puts "2. Select one of the neighborhoods from the map.\n \n"
+puts "3. Copy/Paste the URL from the address bar of this first results-page
+\s\s\sinto the promp below.\n\n"
+
+base_uri = gets.chomp
 
 # Use Nokogiri to access the query
 doc = Nokogiri::HTML(open(base_uri))
